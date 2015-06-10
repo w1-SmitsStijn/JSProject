@@ -1,7 +1,6 @@
 // Initialize Phaser, and create a 1500x900px game
 var game = new Phaser.Game(1150, 700, Phaser.CANVAS, 'gameDiv', {preload: preload, create: create, update: update});
 
-// Create our 'main' state that will contain the game
 var gameStarted = false;
 var zombie = [];
 var choosePlayerNumber = 0;
@@ -14,6 +13,7 @@ var canRemoveLife = true;
     function preload() {
         game.stage.backgroundColor = '#4DBD33';
 
+        game.load.image('background', './IMAGES/background.png');
         game.load.image('menu', './IMAGES/menu.png');
         game.load.image('button_start', './IMAGES/button_start.png');
         game.load.image('button_right', './IMAGES/button_right.png');
@@ -33,6 +33,7 @@ var canRemoveLife = true;
 
     function create() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
+        background = game.add.image(0, 0, 'background');
         openMenu();
     }
 
@@ -92,7 +93,7 @@ var canRemoveLife = true;
         choosePlayer.kill();
         gameStarted = true;
 
-        zombie[0] = game.add.sprite(game.world.centerX - 25, 700, 'zombie');
+        zombie[0] = game.add.sprite(game.world.randomX, game.world.randomY, 'zombie');
         zombie[0].frame = 1;
         game.physics.enable(zombie[0], Phaser.Physics.ARCADE);
         zombie[0].body.collideWorldBounds = true;
@@ -163,7 +164,7 @@ var canRemoveLife = true;
         level++;
         timer = 30;
 
-        zombie[level - 1] = game.add.sprite(game.world.centerX - 25, 700, 'zombie');
+        zombie[level - 1] = game.add.sprite(game.world.randomX, game.world.randomY, 'zombie');
         zombie[level - 1].frame = 1;
         game.physics.enable(zombie[level - 1], Phaser.Physics.ARCADE);
         zombie[level - 1].body.collideWorldBounds = true;
@@ -248,7 +249,7 @@ var canRemoveLife = true;
     }
 
     function enemyMove(enemy) {
-        if (((enemy.position.x - player.position.x < 5) && (enemy.position.x - player.position.x > -5)) == false) {
+        if (((enemy.position.x - player.position.x < 2) && (enemy.position.x - player.position.x > -2)) == false) {
             if (enemy.position.x < player.position.x) {
                 enemy.body.velocity.x = 80;
                 enemy.body.velocity.y = 0;
@@ -265,7 +266,7 @@ var canRemoveLife = true;
                 enemy.animations.stop();
             }
         }
-        else if (((enemy.position.y - player.position.y < 5) && (enemy.position.y - player.position.y > -5)) == false) {
+        else if (((enemy.position.y - player.position.y < 2) && (enemy.position.y - player.position.y > -2)) == false) {
             if (enemy.position.y < player.position.y) {
                 enemy.body.velocity.x = 0;
                 enemy.body.velocity.y = 80;
